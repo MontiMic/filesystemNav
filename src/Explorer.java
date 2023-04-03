@@ -8,10 +8,11 @@ import java.util.Objects;
 
 public class Explorer extends Thread {
 
-    public Explorer(File dir){
+    private final File dir;
+    public void run(){
         for (File file : Objects.requireNonNull(dir.listFiles())){
             if (file.isDirectory()) {
-                new Explorer(file);
+                new Explorer(file).start();
             } else {
                 if (file.getName().endsWith(".java")){
                     try {
@@ -22,5 +23,8 @@ public class Explorer extends Thread {
                 }
             }
         }
+    }
+    public Explorer(File dir){
+        this.dir = dir;
     }
 }
