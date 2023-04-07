@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         File file = new File(args[0]);
         var explorerMonitor = new ExplorerMonitor();
-        var counterMonitor = new CounterMonitor(5, 1000);
+        var counterMonitor = new CounterMonitor(5, 1000, 1000000);
 
         var t = System.currentTimeMillis();
         explorerMonitor.setOnStoppedCallback(() -> {
@@ -23,7 +23,7 @@ public class Main {
         for (int i = 0; i < 1; i++) {
             explorerMonitor.add(file);
         }
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < Integer.parseInt(args[1]); i++) {
             new Explorer(explorerMonitor, counterMonitor).start();
         }
     }
