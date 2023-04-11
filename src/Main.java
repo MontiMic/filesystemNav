@@ -5,26 +5,16 @@ import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
-        File file = new File(args[0]);
-        var explorerMonitor = new ExplorerMonitor();
-        var counterMonitor = new CounterMonitor(5, 1000, 1000000);
-
+        ThreadedExplorer threadedExplorer = new ThreadedExplorer(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         var t = System.currentTimeMillis();
-        explorerMonitor.setOnStoppedCallback(() -> {
-            System.out.println(file.getAbsolutePath());
-            for (var b : counterMonitor.getBuckets()) {
-                System.out.println(b);
-            }
-            for (var f : counterMonitor.getTopFiles(100)) {
-                System.out.println(f);
-            }
-            System.out.println("Time: " + (System.currentTimeMillis() - t));
-        });
-        for (int i = 0; i < 1; i++) {
-            explorerMonitor.add(file);
+        threadedExplorer.start();
+        threadedExplorer.await();
+        System.out.println("Time: " + (System.currentTimeMillis() - t));
+        for (var b : threadedExplorer.getBuckets()) {
+            System.out.println(b);
         }
-        for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-            new Explorer(explorerMonitor, counterMonitor).start();
+        for (var f : threadedExplorer.getTopFiles()) {
+            System.out.println(f);
         }
     }
 }

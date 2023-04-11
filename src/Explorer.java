@@ -8,7 +8,6 @@ public class Explorer extends Thread {
 
     private final ExplorerMonitor explorerMonitor;
     private final CounterMonitor counterMonitor;
-    public int counter = 0;
 
     public Explorer(ExplorerMonitor explorerMonitor, CounterMonitor counterMonitor){
         this.explorerMonitor = explorerMonitor;
@@ -29,18 +28,21 @@ public class Explorer extends Thread {
         }
     }
 
+    private void doSingleTask() throws InterruptedException {
+        var file = this.explorerMonitor.pop();
+        this.explorerMonitor.startWork();
+        if (file.isDirectory()) {
+            this.exploreDir(file);
+        } else {
+            this.exploreFile(file);
+        }
+        this.explorerMonitor.stopWork();
+    }
+
     public void run(){
         while(true) {
             try {
-                var file = this.explorerMonitor.pop();
-                this.explorerMonitor.startWork();
-                this.counter++;
-                if (file.isDirectory()) {
-                    this.exploreDir(file);
-                } else {
-                    this.exploreFile(file);
-                }
-                this.explorerMonitor.stopWork();
+                this.doSingleTask();
             } catch (InterruptedException ignored){
                 return;
             }
