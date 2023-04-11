@@ -32,11 +32,16 @@ public class ThreadedExplorer {
     public List<Integer> getBuckets(){
         return this.counterMonitor.getBuckets();
     }
+
     public void await(){
         try {
             this.explorerMonitor.awaitStop();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean isDone() {
+        return this.explorerMonitor.isDone();
     }
 }

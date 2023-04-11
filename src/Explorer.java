@@ -22,8 +22,7 @@ public class Explorer extends Thread {
         if (file.getName().endsWith(".java")){
             try (var lines = Files.lines(file.toPath(), StandardCharsets.UTF_8)) {
                 this.counterMonitor.countedFile(file, lines.count());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (Exception ignore) {
             }
         }
     }

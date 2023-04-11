@@ -2,7 +2,6 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
 
 public class ExplorerMonitor {
     private final Queue<File> queue = new LinkedList<>();
@@ -30,9 +29,12 @@ public class ExplorerMonitor {
     public void awaitStop() throws InterruptedException {
         stopLatch.await();
     }
+    public boolean isDone() {
+        return this.queue.isEmpty();
+    }
 
     private boolean shouldStop(){
-        return this.workingThreads <= 0 && this.queue.isEmpty();
+        return this.workingThreads <= 0 && this.isDone();
     }
     public synchronized void add(File file){
         this.queue.add(file);

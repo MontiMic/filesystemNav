@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.File;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -5,7 +6,7 @@ import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
-        ThreadedExplorer threadedExplorer = new ThreadedExplorer(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+        /*ThreadedExplorer threadedExplorer = new ThreadedExplorer(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         var t = System.currentTimeMillis();
         threadedExplorer.start();
         threadedExplorer.await();
@@ -15,6 +16,13 @@ public class Main {
         }
         for (var f : threadedExplorer.getTopFiles()) {
             System.out.println(f);
-        }
+        }*/
+
+
+        JFrame frame = new JFrame("MainForm");
+        frame.setContentPane(new MainForm().getRootPanel());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }
