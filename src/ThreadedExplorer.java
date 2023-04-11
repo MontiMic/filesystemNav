@@ -11,6 +11,10 @@ public class ThreadedExplorer {
         this.counterMonitor = new CounterMonitor(nBuckets, maxLines, maxFiles);
     }
 
+    public boolean isDone() {
+        return this.explorerMonitor.isDone();
+    }
+
     public void start(int nThreads){
         for (int i = 0; i < nThreads; i++) {
             new Explorer(this.explorerMonitor, this.counterMonitor).start();
@@ -25,14 +29,6 @@ public class ThreadedExplorer {
         this.explorerMonitor.stop();
     }
 
-    public List<FileEntry> getTopFiles(){
-        return this.counterMonitor.getTopFiles();
-    }
-
-    public List<Integer> getBuckets(){
-        return this.counterMonitor.getBuckets();
-    }
-
     public void await(){
         try {
             this.explorerMonitor.awaitStop();
@@ -41,7 +37,11 @@ public class ThreadedExplorer {
         }
     }
 
-    public boolean isDone() {
-        return this.explorerMonitor.isDone();
+    public List<FileEntry> getTopFiles(){
+        return this.counterMonitor.getTopFiles();
+    }
+
+    public List<Integer> getBuckets(){
+        return this.counterMonitor.getBuckets();
     }
 }

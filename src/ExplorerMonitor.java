@@ -1,33 +1,24 @@
 import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.CountDownLatch;
 
 public class ExplorerMonitor {
     private final Queue<File> queue = new LinkedList<>();
-    private CountDownLatch stopLatch;
+    private Runnable onStopped;
     private boolean stopped;
     private int workingThreads;
 
-    public ExplorerMonitor() {
-        restart();
+    public void setOnStoppedCallback(Runnable r) {
+        this.onStopped = r;
     }
 
-    public void restart(){
-        if (this.stopped)
-            return;
-        stopLatch = new CountDownLatch(1);
-        stopped = false;
-    }
     public synchronized void stop(){
         if (this.stopped)
             return;
         this.stopped = true;
         notifyAll();
-        stopLatch.countDown();
-    }
-    public void awaitStop() throws InterruptedException {
-        stopLatch.await();
+        if (onStopped != null)
+            onStopped.run();
     }
     public boolean isDone() {
         return this.queue.isEmpty();
