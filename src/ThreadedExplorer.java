@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public class ThreadedExplorer {
     private final ExplorerMonitor explorerMonitor;
@@ -14,8 +15,12 @@ public class ThreadedExplorer {
     public boolean isDone() {
         return this.explorerMonitor.isDone();
     }
+    public boolean isStopped() {
+        return this.explorerMonitor.isStopped();
+    }
 
     public void start(int nThreads){
+        this.explorerMonitor.restart();
         for (int i = 0; i < nThreads; i++) {
             new Explorer(this.explorerMonitor, this.counterMonitor).start();
         }
@@ -29,19 +34,15 @@ public class ThreadedExplorer {
         this.explorerMonitor.stop();
     }
 
-    public void await(){
-        try {
-            this.explorerMonitor.awaitStop();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public void setOnStoppedCallback(Runnable r) {
+        this.explorerMonitor.setOnStoppedCallback(r);
     }
 
     public List<FileEntry> getTopFiles(){
         return this.counterMonitor.getTopFiles();
     }
 
-    public List<Integer> getBuckets(){
+    public Map<Integer, Integer> getBuckets(){
         return this.counterMonitor.getBuckets();
     }
 }

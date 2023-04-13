@@ -1,8 +1,7 @@
 import java.io.File;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CounterMonitor {
     private final TreeSet<FileEntry> files = new TreeSet<>(Comparator.comparingLong(o -> -o.lines()));
@@ -28,8 +27,9 @@ public class CounterMonitor {
         return this.files.stream().toList();
     }
 
-    public synchronized List<Integer> getBuckets() {
-        return Arrays.stream(this.buckets).boxed().toList();
+    public synchronized Map<Integer, Integer> getBuckets() {
+        return IntStream.range(0, this.buckets.length).boxed()
+                .collect(Collectors.toMap(i -> i * this.bucketSize, i -> this.buckets[i]));
     }
 
 }

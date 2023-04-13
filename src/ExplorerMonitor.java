@@ -12,6 +12,9 @@ public class ExplorerMonitor {
         this.onStopped = r;
     }
 
+    public void restart() {
+        this.stopped = false;
+    }
     public synchronized void stop(){
         if (this.stopped)
             return;
@@ -22,6 +25,9 @@ public class ExplorerMonitor {
     }
     public boolean isDone() {
         return this.queue.isEmpty();
+    }
+    public boolean isStopped() {
+        return this.stopped;
     }
 
     private boolean shouldStop(){
