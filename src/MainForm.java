@@ -26,6 +26,7 @@ public class MainForm {
     public MainForm() {
         stopped();
 
+        directoryText.setText(System.getProperty("user.home"));
         bucketsList.setModel(bucketsModel);
         topList.setModel(topModel);
 

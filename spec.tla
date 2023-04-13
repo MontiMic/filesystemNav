@@ -8,8 +8,7 @@ EXTENDS TLC, Integers, Sequences
         queueMutex = 0;
         bucketsMutex = 0;
     define
-    AllDone == pc[1] = "Done" /\ pc[2] = "Done"
-    Correct == AllDone => buckets = <<5,4,3>>
+    Correct == <>[](buckets = <<5,4,3>>)
     MutexQueue == []~(pc[1] = "RemoveHead" /\ pc[2] = "RemoveHead")
     MutexBucket == []~(pc[1] = "IncrementBucket" /\ pc[2] = "IncrementBucket")
     end define;
@@ -34,6 +33,7 @@ EXTENDS TLC, Integers, Sequences
         queue := Tail(queue);
     ReleaseQueueMutex:
         queueMutex := 0;
+        
     DecideBucket:
         if h < 10 then
             bucketIdx := 1;
@@ -57,12 +57,11 @@ EXTENDS TLC, Integers, Sequences
 
 
 end algorithm;*)
-\* BEGIN TRANSLATION (chksum(pcal) = "7c28162a" /\ chksum(tla) = "33008de4")
+\* BEGIN TRANSLATION (chksum(pcal) = "7c28162a" /\ chksum(tla) = "6a537879")
 VARIABLES buckets, queue, queueMutex, bucketsMutex, pc
 
 (* define statement *)
-AllDone == pc[1] = "Done" /\ pc[2] = "Done"
-Correct == AllDone => buckets = <<5,4,3>>
+Correct == <>[](buckets = <<5,4,3>>)
 MutexQueue == []~(pc[1] = "RemoveHead" /\ pc[2] = "RemoveHead")
 MutexBucket == []~(pc[1] = "IncrementBucket" /\ pc[2] = "IncrementBucket")
 
@@ -182,5 +181,5 @@ Termination == <>(\A self \in ProcSet: pc[self] = "Done")
 
 =============================================================================
 \* Modification History
-\* Last modified Wed Apr 12 19:53:37 CEST 2023 by Sen
+\* Last modified Thu Apr 13 12:53:34 CEST 2023 by Sen
 \* Created Wed Apr 12 19:12:28 CEST 2023 by Sen

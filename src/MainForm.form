@@ -108,7 +108,7 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <text value="C:\Users\Sen\Documents\uni\pcd\filesystemNav"/>
+                  <text value=""/>
                 </properties>
               </component>
               <grid id="3e896" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
