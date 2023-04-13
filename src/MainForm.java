@@ -41,8 +41,8 @@ public class MainForm {
                         Integer.parseInt(maxTopFilesText.getText())
                 );
                 explorer.setOnStoppedCallback(() -> SwingUtilities.invokeLater(() -> {
-                    updateStatus();
                     updateLists();
+                    updateStatus();
                 }));
             }
             explorer.start();
